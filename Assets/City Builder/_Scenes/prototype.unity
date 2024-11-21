@@ -3760,6 +3760,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1708152700}
     m_Modifications:
+    - target: {fileID: -833501730596592733, guid: 9dd698ddebe578d4ea6e4777f27817e3, type: 3}
+      propertyPath: treeLevel
+      value: 
+      objectReference: {fileID: 1554378425}
     - target: {fileID: 3638279290098989792, guid: 9dd698ddebe578d4ea6e4777f27817e3, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -8939,6 +8943,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7648638204221612638, guid: 9dd698ddebe578d4ea6e4777f27817e3, type: 3}
   m_PrefabInstance: {fileID: 560314791}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1554378425 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6811827083964696837, guid: 9dd698ddebe578d4ea6e4777f27817e3, type: 3}
+  m_PrefabInstance: {fileID: 560314791}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554378423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7568f5dd624fd2a4890a7214e947df6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1554723168
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -15,6 +15,8 @@ namespace CityBuilder
         [SerializeField] protected float treeDistance = 7f;
         [SerializeField] protected int treeMax = 7;
         [SerializeField] private List<GameObject> trees;
+        [SerializeField] private int storeMax = 7;
+        [SerializeField] private int storeCurrent = 0;
 
         protected override void Start()
         {
@@ -160,6 +162,7 @@ namespace CityBuilder
         protected virtual void Planning(WorkerController workerController)
         {
             if (this.NeedMoreTree()) workerController.workerTasks.TaskAdd(TaskType.PLANT_TREE);
+            if (!this.IsStoreFull()) workerController.workerTasks.TaskAdd(TaskType.CHOP_TREE);
         }
 
         protected virtual bool NeedMoreTree()
@@ -167,9 +170,29 @@ namespace CityBuilder
             return this.treeMax >= this.trees.Count;
         }
 
+        protected virtual bool IsStoreFull()
+        {
+            return this.storeCurrent >= this.storeMax;
+        }
+
         protected virtual void ChopTree(WorkerController workerController)
         {
+            WorkerTasks workerTasks = workerController.workerTasks;
+            if (workerTasks.InHouse) workerTasks.TaskWorking.GoOutBuilding();
 
+            TreeController treeController = this.GetNearestTree();
+            workerController.workerMovement.SetTarget(treeController.transform);
+        }
+
+        protected virtual TreeController GetNearestTree()
+        {
+            foreach (GameObject tree in this.trees)
+            {
+                TreeController treeController = tree.GetComponent<TreeController>();
+                if (treeController.treeLevel.IsMaxLevel()) return treeController;
+            }
+
+            return null;
         }
     }
 }

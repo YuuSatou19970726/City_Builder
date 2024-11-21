@@ -47,7 +47,7 @@ namespace CityBuilder
             ShowNextBuild();
         }
 
-        protected virtual bool IsMaxLevel()
+        public virtual bool IsMaxLevel()
         {
             if (this.currentLevel == this.levels.Count - 2) this.isMaxLevel = true;
             else this.isMaxLevel = false;
