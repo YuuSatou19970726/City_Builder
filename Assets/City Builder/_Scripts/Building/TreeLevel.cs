@@ -7,7 +7,7 @@ namespace CityBuilder
     public class TreeLevel : BuildLevel
     {
         [SerializeField] protected bool isMaxLevel = false;
-        [SerializeField] protected Tree tree;
+        [SerializeField] protected Logwood tree;
         [SerializeField] protected float treeTimer = 0;
         [SerializeField] protected float treeDeplay = Mathf.Infinity;
 
@@ -28,7 +28,7 @@ namespace CityBuilder
         {
             if (this.tree != null) return;
 
-            this.tree = GetComponent<Tree>();
+            this.tree = GetComponent<Logwood>();
 
             this.GetTreeDelay();
         }

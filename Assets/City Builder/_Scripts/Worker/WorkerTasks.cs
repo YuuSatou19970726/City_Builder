@@ -17,6 +17,8 @@ namespace CityBuilder
         private bool readyForTask = false;
         public bool ReadyForTask { get { return readyForTask; } }
         [SerializeField] protected List<TaskType> tasks;
+        [SerializeField] protected Transform taskTarget;
+        public Transform TaskTarget { get { return taskTarget; } }
 
         protected override void FixedUpdate()
         {
@@ -76,6 +78,11 @@ namespace CityBuilder
         public virtual void TaskCurrentDone()
         {
             this.tasks.RemoveAt(this.tasks.Count - 1);
+        }
+
+        public virtual void SetTaskTarget(Transform transform)
+        {
+            this.taskTarget = transform;
         }
     }
 }

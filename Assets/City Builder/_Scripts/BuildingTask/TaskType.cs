@@ -11,5 +11,6 @@ namespace CityBuilder
         // woodcutter
         PLANT_TREE = 100,
         CHOP_TREE = 101,
+        FIND_TREE_TO_CHOP = 102,
     }
 }

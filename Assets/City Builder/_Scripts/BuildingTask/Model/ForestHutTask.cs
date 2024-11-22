@@ -17,6 +17,7 @@ namespace CityBuilder
         [SerializeField] private List<GameObject> trees;
         [SerializeField] private int storeMax = 7;
         [SerializeField] private int storeCurrent = 0;
+        [SerializeField] private float chopSpeed = 0.7f;
 
         protected override void Start()
         {
@@ -29,6 +30,12 @@ namespace CityBuilder
             base.LoadComponents();
             this.LoadObjects();
             this.LoadTreePrefab();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            StopAllCoroutines();
         }
 
         protected virtual void LoadObjects()
@@ -75,6 +82,9 @@ namespace CityBuilder
             {
                 case TaskType.PLANT_TREE:
                     this.PlantTree(workerController);
+                    break;
+                case TaskType.FIND_TREE_TO_CHOP:
+                    this.FindTreeToChop(workerController);
                     break;
                 case TaskType.CHOP_TREE:
                     this.ChopTree(workerController);
@@ -130,7 +140,6 @@ namespace CityBuilder
         protected virtual Transform GetPlantPlace()
         {
             Vector3 newTreePos = this.RandomPlaceForTree();
-            Debug.Log($"GetPlantPlace: {IsPointOnNavMesh(newTreePos)} {trees.Count}");
             if (!IsPointOnNavMesh(newTreePos)) return null;
 
             float dis = Vector3.Distance(transform.position, newTreePos);
@@ -162,7 +171,11 @@ namespace CityBuilder
         protected virtual void Planning(WorkerController workerController)
         {
             if (this.NeedMoreTree()) workerController.workerTasks.TaskAdd(TaskType.PLANT_TREE);
-            if (!this.IsStoreFull()) workerController.workerTasks.TaskAdd(TaskType.CHOP_TREE);
+            if (!this.IsStoreFull())
+            {
+                workerController.workerTasks.TaskAdd(TaskType.CHOP_TREE);
+                workerController.workerTasks.TaskAdd(TaskType.FIND_TREE_TO_CHOP);
+            }
         }
 
         protected virtual bool NeedMoreTree()
@@ -177,11 +190,28 @@ namespace CityBuilder
 
         protected virtual void ChopTree(WorkerController workerController)
         {
-            WorkerTasks workerTasks = workerController.workerTasks;
-            if (workerTasks.InHouse) workerTasks.TaskWorking.GoOutBuilding();
+            // TreeController treeController = this.GetNearestTree();
+            // workerController.workerMovement.SetTarget(treeController.transform);
+            if (workerController.workerMovement.IsWorking) return;
 
-            TreeController treeController = this.GetNearestTree();
-            workerController.workerMovement.SetTarget(treeController.transform);
+            StartCoroutine(Chopping(workerController, workerController.workerTasks.TaskTarget));
+        }
+
+        IEnumerator Chopping(WorkerController workerController, Transform tree)
+        {
+            workerController.workerMovement.SetIsWorking(true);
+            yield return new WaitForSeconds(this.chopSpeed);
+
+            TreeController treeController = tree.GetComponent<TreeController>();
+            treeController.treeLevel.ShowLastBuild();
+            List<Resource> resources = treeController.logwood.TakeAll(); //TODO: put resources into worker
+            treeController.choper = null;
+            this.trees.Remove(treeController.gameObject);
+            TreeManager.Instance.Trees().Remove(treeController.gameObject);
+
+            workerController.workerMovement.SetIsWorking(false);
+            workerController.workerTasks.SetTaskTarget(null);
+            workerController.workerTasks.TaskCurrentDone();
         }
 
         protected virtual TreeController GetNearestTree()
@@ -193,6 +223,38 @@ namespace CityBuilder
             }
 
             return null;
+        }
+
+        protected virtual void FindTreeToChop(WorkerController workerController)
+        {
+            WorkerTasks workerTasks = workerController.workerTasks;
+            if (workerTasks.InHouse) workerTasks.TaskWorking.GoOutBuilding();
+
+            if (workerController.workerTasks.TaskTarget == null)
+            {
+                this.FindNearestTree(workerController);
+            }
+            else if (workerController.workerMovement.TargetDistance() <= 1.5f)
+            {
+                workerController.workerMovement.SetTarget(null);
+                workerController.workerTasks.TaskCurrentDone();
+            }
+        }
+
+        protected virtual void FindNearestTree(WorkerController workerController)
+        {
+            foreach (GameObject tree in this.trees)
+            {
+                TreeController treeController = tree.GetComponent<TreeController>();//TODO: can make it faster
+                if (treeController == null) continue;
+                if (!treeController.treeLevel.IsMaxLevel()) continue;
+                if (treeController.choper != null) return;
+
+                treeController.choper = workerController;
+                workerController.workerTasks.SetTaskTarget(treeController.transform);
+                workerController.workerMovement.SetTarget(treeController.transform);
+                return;
+            }
         }
     }
 }

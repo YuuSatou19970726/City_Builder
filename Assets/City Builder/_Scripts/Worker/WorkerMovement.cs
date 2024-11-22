@@ -15,6 +15,7 @@ namespace CityBuilder
         [SerializeField] private Animator animator;
         private bool isWalking = false;
         private bool isWorking = false;
+        public bool IsWorking { get { return isWorking; } }
         [SerializeField] protected float walkLimit = 0.7f;
         [SerializeField] protected float targetDistance = 0f;
 
@@ -94,6 +95,16 @@ namespace CityBuilder
 
             this.targetDistance = Vector3.Distance(transform.position, targetPos);
             return this.targetDistance < this.walkLimit;
+        }
+
+        public virtual float TargetDistance()
+        {
+            return this.targetDistance;
+        }
+
+        public virtual void SetIsWorking(bool checkWorking)
+        {
+            this.isWorking = checkWorking;
         }
 
         // protected virtual void FindHouse()

@@ -42,5 +42,21 @@ namespace CityBuilder
         {
             return this.createDelay;
         }
+
+        public virtual List<Resource> TakeAll()
+        {
+            List<Resource> resources = new List<Resource>();
+            foreach (ResourceHolder resourceHolder in this.resHolders)
+            {
+                Resource newResource = new Resource
+                {
+                    name = resourceHolder.Name(),
+                    number = (int)resourceHolder.TakeAll(),
+                };
+
+                resources.Add(newResource);
+            }
+            return resources;
+        }
     }
 }

@@ -527,7 +527,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4536124835266938677
 Transform:
   m_ObjectHideFlags: 0
@@ -1309,9 +1309,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7648638204221612638}
   - component: {fileID: 178824620782612078}
-  - component: {fileID: 5758993773248613218}
   - component: {fileID: 6811827083964696837}
   - component: {fileID: -833501730596592733}
+  - component: {fileID: 310524113789291550}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
@@ -1357,27 +1357,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 5.5617986, z: 1}
   m_Center: {x: 0, y: 2.7809107, z: 0}
---- !u!114 &5758993773248613218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7820651311427595940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d2ff86b1d617154494e635e89efd3c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resHolders:
-  - {fileID: 5136697955531857106}
-  buildingType: 0
-  resCreate:
-  - name: 1001
-    number: 1
-  resRequire: []
-  createTimer: 0
-  createDelay: 7
 --- !u!114 &6811827083964696837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1398,7 +1377,7 @@ MonoBehaviour:
   - {fileID: 4870430289559022292}
   currentLevel: 0
   isMaxLevel: 0
-  tree: {fileID: 5758993773248613218}
+  tree: {fileID: 0}
   treeTimer: 0
   treeDeplay: 2.3333333
 --- !u!114 &-833501730596592733
@@ -1413,6 +1392,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7879d013614a2f44bb3f554c5f0331a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  treeLevel: {fileID: 0}
+  choper: {fileID: 0}
+--- !u!114 &310524113789291550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7820651311427595940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d2ff86b1d617154494e635e89efd3c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resHolders: []
+  buildingType: 0
+  resCreate: []
+  resRequire: []
+  createTimer: 0
+  createDelay: 2
 --- !u!1 &7955177809543229807
 GameObject:
   m_ObjectHideFlags: 0

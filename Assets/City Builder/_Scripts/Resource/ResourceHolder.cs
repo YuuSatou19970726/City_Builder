@@ -37,5 +37,12 @@ namespace CityBuilder
         {
             this.resMax = count;
         }
+
+        public virtual float TakeAll()
+        {
+            float take = this.resCurrent;
+            this.resCurrent = 0;
+            return take;
+        }
     }
 }
