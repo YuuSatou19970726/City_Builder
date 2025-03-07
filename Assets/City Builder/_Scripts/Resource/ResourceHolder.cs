@@ -26,7 +26,7 @@ namespace CityBuilder
             return this.resourceName;
         }
 
-        public virtual float Add(int number)
+        public virtual float Add(float number)
         {
             this.resCurrent += number;
             if (this.resCurrent > this.resMax) this.resCurrent = this.resMax;
@@ -43,6 +43,11 @@ namespace CityBuilder
             float take = this.resCurrent;
             this.resCurrent = 0;
             return take;
+        }
+
+        public virtual bool IsMax()
+        {
+            return this.resCurrent == this.resMax;
         }
     }
 }

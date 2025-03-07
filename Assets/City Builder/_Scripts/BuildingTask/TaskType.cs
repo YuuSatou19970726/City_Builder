@@ -12,5 +12,6 @@ namespace CityBuilder
         PLANT_TREE = 100,
         CHOP_TREE = 101,
         FIND_TREE_TO_CHOP = 102,
+        BRING_RESOURCE_BACK = 103,
     }
 }

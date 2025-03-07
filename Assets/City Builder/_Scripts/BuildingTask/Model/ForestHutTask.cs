@@ -17,7 +17,8 @@ namespace CityBuilder
         [SerializeField] private List<GameObject> trees;
         [SerializeField] private int storeMax = 7;
         [SerializeField] private int storeCurrent = 0;
-        [SerializeField] private float chopSpeed = 0.7f;
+        [SerializeField] private float chopSpeed = 7f;
+        [SerializeField] private float treeRemoveSpeed = 16;
 
         protected override void Start()
         {
@@ -88,6 +89,9 @@ namespace CityBuilder
                     break;
                 case TaskType.CHOP_TREE:
                     this.ChopTree(workerController);
+                    break;
+                case TaskType.BRING_RESOURCE_BACK:
+                    this.BringTreeBack(workerController);
                     break;
                 case TaskType.GO_TO_WORK_STATION:
                     this.BackToWorkStation(workerController);
@@ -170,11 +174,17 @@ namespace CityBuilder
 
         protected virtual void Planning(WorkerController workerController)
         {
-            if (this.NeedMoreTree()) workerController.workerTasks.TaskAdd(TaskType.PLANT_TREE);
-            if (!this.IsStoreFull())
+            if (!this.buildingController.Warehouse.IsFull())
             {
+                workerController.workerTasks.TaskAdd(TaskType.BRING_RESOURCE_BACK);
                 workerController.workerTasks.TaskAdd(TaskType.CHOP_TREE);
                 workerController.workerTasks.TaskAdd(TaskType.FIND_TREE_TO_CHOP);
+            }
+
+            if (this.NeedMoreTree())
+            {
+                workerController.workerMovement.SetTarget(null);
+                workerController.workerTasks.TaskAdd(TaskType.PLANT_TREE);
             }
         }
 
@@ -204,14 +214,23 @@ namespace CityBuilder
 
             TreeController treeController = tree.GetComponent<TreeController>();
             treeController.treeLevel.ShowLastBuild();
-            List<Resource> resources = treeController.logwood.TakeAll(); //TODO: put resources into worker
+            List<Resource> resources = treeController.logwood.TakeAll();
             treeController.choper = null;
             this.trees.Remove(treeController.gameObject);
             TreeManager.Instance.Trees().Remove(treeController.gameObject);
 
             workerController.workerMovement.SetIsWorking(false);
             workerController.workerTasks.SetTaskTarget(null);
+            workerController.resourceCarrier.AddByList(resources);
             workerController.workerTasks.TaskCurrentDone();
+
+            StartCoroutine(RemoveTree(tree));
+        }
+
+        IEnumerator RemoveTree(Transform tree)
+        {
+            yield return new WaitForSeconds(this.treeRemoveSpeed);
+            Destroy(tree.gameObject);
         }
 
         protected virtual TreeController GetNearestTree()
@@ -255,6 +274,19 @@ namespace CityBuilder
                 workerController.workerMovement.SetTarget(treeController.transform);
                 return;
             }
+        }
+
+        protected virtual void BringTreeBack(WorkerController workerController)
+        {
+            WorkerTask workerTask = workerController.workerTasks.TaskWorking;
+            workerTask.GoToBuilding();
+            if (!workerController.workerMovement.IsCloseToTarget()) return;
+
+            List<Resource> resources = workerController.resourceCarrier.TakeAll();
+            this.buildingController.Warehouse.AddByList(resources);
+            workerTask.GoIntoBuilding();
+
+            workerController.workerTasks.TaskCurrentDone();
         }
     }
 }

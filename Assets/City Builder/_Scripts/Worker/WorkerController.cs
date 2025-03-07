@@ -15,6 +15,8 @@ namespace CityBuilder
         public Transform workerModel;
         private Animator animator;
 
+        public ResourceCarrier resourceCarrier;
+
         protected override void LoadComponents()
         {
             base.LoadComponents();
@@ -22,6 +24,7 @@ namespace CityBuilder
             this.LoadWorkerMovement();
             this.LoadWorkerTasks();
             this.LoadAnimator();
+            this.LoadResourceCarrier();
         }
 
         protected virtual void LoadWorkerBuildings()
@@ -47,6 +50,12 @@ namespace CityBuilder
             if (this.animator != null) return;
             this.animator = GetComponentInChildren<Animator>();
             this.workerModel = this.animator.transform;
+        }
+
+        protected virtual void LoadResourceCarrier()
+        {
+            if (this.resourceCarrier != null) return;
+            this.resourceCarrier = GetComponent<ResourceCarrier>();
         }
     }
 }

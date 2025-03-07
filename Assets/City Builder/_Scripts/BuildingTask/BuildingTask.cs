@@ -7,7 +7,7 @@ namespace CityBuilder
     public abstract class BuildingTask : LoadMonoBehaviour
     {
         [Header("Building Task")]
-        private BuildingController buildingController;
+        protected BuildingController buildingController;
         [SerializeField] protected float taskTimer = 0;
         [SerializeField] protected float taskDelay = 5f;
 

@@ -11591,6 +11591,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -104
       objectReference: {fileID: 0}
+    - target: {fileID: 5420717075366959307, guid: da9da43ab62bf90418f54231e6fb4877, type: 3}
+      propertyPath: workerModel
+      value: 
+      objectReference: {fileID: 2632645873571507198}
+    - target: {fileID: 5420717075366959307, guid: da9da43ab62bf90418f54231e6fb4877, type: 3}
+      propertyPath: resourceCarrier
+      value: 
+      objectReference: {fileID: 2632645873571507197}
     - target: {fileID: 5907329377371465800, guid: da9da43ab62bf90418f54231e6fb4877, type: 3}
       propertyPath: m_Name
       value: Wood Cutter
@@ -11638,8 +11646,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5907329377371465800, guid: da9da43ab62bf90418f54231e6fb4877, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2632645873571507197}
   m_SourcePrefab: {fileID: 100100000, guid: da9da43ab62bf90418f54231e6fb4877, type: 3}
+--- !u!1 &2632645873571507196 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5907329377371465800, guid: da9da43ab62bf90418f54231e6fb4877, type: 3}
+  m_PrefabInstance: {fileID: 2632645873571507195}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2632645873571507197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2632645873571507196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b002d5cfe2466439ba4b7ca5f4f29a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resources: []
+--- !u!4 &2632645873571507198 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8541871882577850146, guid: da9da43ab62bf90418f54231e6fb4877, type: 3}
+  m_PrefabInstance: {fileID: 2632645873571507195}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8021464366699509996
 PrefabInstance:
   m_ObjectHideFlags: 0
