@@ -1,7 +1,7 @@
 namespace CityBuilder
 {
     [System.Serializable]
-    public class Resource
+    public class ResourceHolder
     {
         public ResourceName resourceName;
         public int number;
