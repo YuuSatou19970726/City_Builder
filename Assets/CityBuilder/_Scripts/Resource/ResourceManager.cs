@@ -10,7 +10,7 @@ namespace CityBuilder
         private static ResourceManager instance;
         public static ResourceManager Instance => instance;
 
-        [SerializeField] protected List<ResourceHolder> resourceHolders;
+        [SerializeField] protected List<Resource> resources;
 
         protected void Awake()
         {
@@ -22,25 +22,25 @@ namespace CityBuilder
 
         public virtual void AddResource(ResourceName resourceName, int number)
         {
-            Debug.Log("add " + resourceName + " " + number);
-            ResourceHolder resourceHolder = this.GetResByName(resourceName);
+            // Debug.Log("Add " + resourceName + " " + number);
+            Resource resource = this.GetResByName(resourceName);
 
-            resourceHolder.number += number;
+            resource.number += number;
         }
 
-        private ResourceHolder GetResByName(ResourceName resourceName)
+        private Resource GetResByName(ResourceName resourceName)
         {
-            ResourceHolder resourceHolder = this.resourceHolders.Find((x) => x.resourceName == resourceName);
-            if (resourceHolder == null)
+            Resource resource = this.resources.Find((x) => x.resourceName == resourceName);
+            if (resource == null)
             {
-                resourceHolder = new ResourceHolder();
-                resourceHolder.resourceName = resourceName;
-                resourceHolder.number = 0;
+                resource = new Resource();
+                resource.resourceName = resourceName;
+                resource.number = 0;
 
-                this.resourceHolders.Add(resourceHolder);
+                this.resources.Add(resource);
             }
 
-            return resourceHolder;
+            return resource;
         }
     }
 }

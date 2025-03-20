@@ -4,28 +4,60 @@ using UnityEngine;
 
 namespace CityBuilder
 {
-    public class ResourceGenerator : MonoBehaviour
+    public class ResourceGenerator : CustomMonoBehaviour
     {
-        [SerializeField] protected ResourceName resourceName;
-        [SerializeField] protected float spped = 2f;
-        [SerializeField] protected float timer = 0;
-        [SerializeField] protected int number = 1;
+        [SerializeField] protected List<ResourceHolder> resourceHolders;
+        [SerializeField] protected List<Resource> resourceCreate;
+        [SerializeField] protected List<Resource> resourceRequire;
+        [SerializeField] protected float createTimer = 0f;
+        [SerializeField] protected float createDelay = 2f;
 
-        private void FixedUpdate()
+        protected override void FixedUpdate()
         {
-            this.Generating();
+            this.Creating();
         }
 
-        protected virtual void Generating()
+        protected override void LoadComponents()
         {
-            if (this.resourceName == ResourceName.noResource) return;
+            this.LoadHolders();
+        }
 
-            this.timer += Time.fixedDeltaTime;
-            if (this.timer < this.spped) return;
-            this.timer = 0;
+        protected virtual void LoadHolders()
+        {
+            Transform res = transform.Find(ObjectTags.RES);
 
-            // Debug.Log("Add:" + this.resourceName);
-            ResourceManager.Instance.AddResource(this.resourceName, this.number);
+            foreach (Transform resTran in res)
+            {
+                // Debug.Log(resTran.name);
+                ResourceHolder resourceHolder = resTran.GetComponent<ResourceHolder>();
+                if (resourceHolder == null) continue;
+                this.resourceHolders.Add(resourceHolder);
+            }
+
+            // Debug.Log(transform.name + ": LoadHolders");
+        }
+
+        protected virtual void Creating()
+        {
+            this.createTimer += Time.fixedDeltaTime;
+            if (this.createTimer < this.createDelay) return;
+            this.createTimer = 0;
+
+            if (!this.IsRequireEnough()) return;
+
+            foreach (Resource resource in this.resourceCreate)
+            {
+                ResourceHolder resourceHolder = this.resourceHolders.Find((holder) => holder.Name() == resource.resourceName);
+                resourceHolder.Add(resource.number);
+            }
+        }
+
+        protected virtual bool IsRequireEnough()
+        {
+            if (this.resourceRequire.Count < 1) return true;
+
+            //TODO: this is not done yet
+            return false;
         }
     }
 }
